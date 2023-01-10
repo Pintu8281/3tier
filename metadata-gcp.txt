@@ -1,0 +1,60 @@
+ http://metadata.google.internal/computeMetadata/v1/
+$ curl "http://metadata.google.internal/computeMetadata/v1/instance/disks/" -H "Metadata-Flavor: Google"
+$ curl "http://metadata.google.internal/computeMetadata/v1/instance/disks/1/" -H "Metadata-Flavor: Google"
+ curl "http://metadata.google.internal/computeMetadata/v1/instance/tags?alt=text" -H "Metadata-Flavor: Google"
+bread
+butter
+cheese
+cream
+lettuce
+
+curl "http://metadata.google.internal/computeMetadata/v1/instance/disks/?recursive=true" -H "Metadata-Flavor: Google"
+[{"deviceName":"boot","index":0,"mode":"READ_WRITE","type":"PERSISTENT"},
+{"deviceName":"persistent-disk-1","index":1,"mode":"READ_WRITE","type":"PERSISTENT"},
+{"deviceName":"persistent-disk-2","index":2,"mode":"READ_ONLY","type":"PERSISTENT"}]
+
+$ curl metadata.google.internal -i
+HTTP/1.1 200 OK
+Metadata-Flavor: Google
+Content-Type: application/text
+Date: Thu, 10 Apr 2014 19:24:27 GMT
+Server: Metadata Server for VM
+Content-Length: 22
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+
+0.1/
+computeMetadata/
+
+$ gcloud compute instances create myinstance --metadata bread=butter
+... select a zone...
+$ gcloud compute ssh myinstance
+curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/env" -H "Metadata-Flavor: Google"
+butter
+
+$ gcloud compute instances add-metadata INSTANCE --metadata env=dev label=test
+metadata:
+  fingerprint: _OW8mWFLqsk=
+  items:
+  - key: bread
+    value: mayo
+  - key: cheese
+    value: cheddar
+  - key: lettuce
+    value: butter
+
+$ gcloud compute instances add-metadata INSTANCE --metadata lettuce=green
+$ gcloud compute instances remove-metadata INSTANCE --keys lettuce
+$ gcloud compute instances create example-instance --metadata-from-file startup-script=FILE
+$ gcloud compute instances create example-instance --metadata startup-script-url=URL
+$ gcloud compute project-info add-metadata --metadata foo=bar baz=bat
+$ gcloud compute project-info describe
+$ curl "http://metadata.google.internal/computeMetadata/v1/instance/tags?wait_for_change=true" -H "Metadata-Flavor: Google"
+$ curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/?recursive=true&wait_for_change=true" -H "Metadata-Flavor: Google"
+$ curl -v "http://metadata.google.internal/computeMetadata/v1/instance/tags" -H "Metadata-Flavor: Google"
+$ curl "http://metadata.google.internal/computeMetadata/v1/instance/tags?wait_for_change=true&timeout_sec=360" -H "Metadata-Flavor: Google"
+$ curl http://metadata.google.internal/computeMetadata/v1/instance/maintenance-event
+gcloud compute instances create my-testvm\
+    --metadata=version=v.1.0
+gcloud compute instances add-metadata my-testvm \
+    --metadata=env1=dev,env=prod

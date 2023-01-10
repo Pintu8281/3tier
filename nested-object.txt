@@ -1,0 +1,52 @@
+let shops= {
+  "gst": asdf1234,
+  "name": "tea-centre",
+  "address1": [{
+      "name": "gurgaon",
+      "phone": "123456",
+      "area": "DLF-phase1",
+      "moreDetails": {
+        "streetno": "U4/13",
+        "nearby": "Metrostation",
+      }
+    }
+  ],
+  "billing": [{
+      "name": "tea-center-dlf",
+      "phone": "1234567890",
+      "amount": "100,
+      "moreworkDetails": {
+        "billing-id": 12345,
+        "tax": 18%
+      }
+    }
+  ]
+}
+let arrys = [];
+
+function recursive(obj, key) {
+  for (let keys in obj) {
+    if (keys === key) {
+      arrys.push(obj[keys])
+
+    } else {
+      if (Array.isArray(obj[keys]) && obj[keys].length > 0) {
+        obj[keys].forEach(function(item) {
+          recursive(item, key)
+        })
+
+      }
+      else if (typeof obj[keys] === 'object') {
+        recursive(obj[keys], key)
+      }
+    }
+  }
+}
+
+recursive(shops, 'billing-id');
+let newObj = {}
+for (let m = 0; m < arrys.length; m++) {
+  newObj[m] = arrys[m]
+
+}
+console.log(newObj)
